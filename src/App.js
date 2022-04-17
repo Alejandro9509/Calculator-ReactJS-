@@ -20,13 +20,13 @@ const  App = () =>  {
   
   const [current , setCurrent] = useState(0)
   const [temp, setTemp] = useState(false)
-  const [operation, setOperation] = useState('')
+  const [operation, setOperation] = useState("")
   const [nop , setNop] = useState(1)
   const [isPut, setIsPut] = useState(false)
 
   const setttingValues = (value) => {
     
-    if(operation !== ''){
+    if(operation !== ""){
       const newValue = ((temp * 10 ) + value) * nop
       setTemp(newValue)
     }else{
@@ -42,22 +42,26 @@ const  App = () =>  {
   }
 
   const makeOperation = () => {
-    if(operation === '' || temp == false){
+    if(operation === "" || temp == false){
       return
     }
-
+    console.log(operation, current, temp)
     switch (operation){
-    case 'x': 
+    case "x": 
       setCurrent( current * temp)
-    case '+': 
+      break; 
+    case "+": 
       setCurrent( current + temp)
-    case '-': 
+      break 
+    case "-": 
       setCurrent( current - temp)
-    case '/': 
+      break; 
+    case "/": 
       setCurrent( current / temp)
+      break; 
 
     }
-    setOperation('')
+    setOperation("")
     setTemp(false)
   }
 
