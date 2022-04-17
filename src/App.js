@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import './App.scss';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap'
+const  App = () =>  {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app"> 
+      <div className="formulaScreen"></div>
+      <div className="outputScreen" id="display"></div>
+      <div id="outer">
+         <div className="outer-left"></div>
+         <div className="outer-right"></div>
+      </div>
     </div>
+    
   );
 }
 

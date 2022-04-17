@@ -1,0 +1,48 @@
+$base-color : #F2F2F2; 
+
+.app {
+    position:relative; 
+    margin: 30px auto; 
+    background-color: blue; 
+    width: 320px;
+    height: 600px;
+}
+.formulaScreen {
+    padding: 10px; 
+    background-color: black; 
+}
+
+.outputScreen{
+    padding: 10px; 
+    background-color: white;
+}
+#outer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 400px;
+    width: 320px;
+    .outer-left {
+        width: 240px;
+        height: 400px;
+        flex: 0 0 240px;
+        background-color: green;
+    }
+    .outer-right {
+        width: 80px;
+        flex: 0 0 80px;
+        height: 400px;
+        background-color: red;
+    }
+    
+}
+
+
+
+.big {
+    flex-basis: 110px;
+}
+
+
+
+
