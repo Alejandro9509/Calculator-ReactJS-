@@ -1,7 +1,5 @@
 
 import './App.scss';
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/js/bootstrap'
 import {useState } from 'react'
 
 const numbers = [
@@ -23,6 +21,7 @@ const  App = () =>  {
   const [operation, setOperation] = useState("")
   const [nop , setNop] = useState(1)
   const [isPut, setIsPut] = useState(false)
+  const [formula, setFormula] = useState("")
 
   const setttingValues = (value) => {
     
@@ -37,7 +36,6 @@ const  App = () =>  {
   }
 
   const settingOperation = (value) => {
-
     setOperation(value)
   }
 
@@ -67,11 +65,15 @@ const  App = () =>  {
 
   return (
     <div className="app"> 
-      <div className="formulaScreen">Formulas</div>
+      <div className="formulaScreen">{formula}</div>
       <div className="outputScreen" id="display">{(operation === '')? current: (operation !== '' && temp !== false )? temp: operation }</div>
       <div id="outer">
          <div className="outer-left">
-           <button id="clear" className="item-flex big-horizontal">AC</button>
+           <button onClick={() => {
+             setCurrent(0)
+             setTemp(false)
+             setOperation("")
+           }} id="clear" className="item-flex big-horizontal">AC</button>
            <button id="divide" className="item-flex" >/</button>
            {
              numbers.map((it) => 

@@ -1,4 +1,8 @@
-$base-color : #F2F2F2; 
+$base-color : #F1F1F1; 
+
+@mixin border ($b...) {
+    border: $b
+}
 
 .app {
     position:relative; 
@@ -37,7 +41,12 @@ $base-color : #F2F2F2;
         .item-flex{
             height: 80px;
             flex: 0 0 80px;
-            background:red; 
+            background:$base-color; 
+            cursor: pointer;
+            @include border(1px solid rgba(0,0,0,0.1)); 
+            &:hover{
+                background-color: #FAFAFA;   
+            }
         }
         .big-horizontal {
             flex-basis: 160px;
@@ -48,20 +57,26 @@ $base-color : #F2F2F2;
         width: 80px;
         flex: 0 0 80px;
         height: 400px;
-        background-color: red;
+        background-color: $base-color;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
         .item-flex{
             height: 80px;
             flex: 0 0 80px;
-            background:red; 
+            background:$base-color; 
+            cursor: pointer;
+            @include border(1px solid rgba(0,0,0,0.1)); 
+            &:hover{
+             background-color: #FAFAFA;   
+            }
         }
         .big-vertical {
             flex-basis: 160px
         }
     } 
 }
+
 
 
 
