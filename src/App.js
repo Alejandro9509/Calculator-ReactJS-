@@ -1,98 +1,139 @@
 
 import './App.scss';
-import {useState } from 'react'
+import React from 'react'
 
-const numbers = [
-  [1 , 'one'], 
-  [2 , 'two'], 
-  [3 , 'tree'], 
-  [4 , 'four'], 
-  [5 , 'five'], 
-  [6 , 'six'],
-  [7 , 'seven'], 
-  [8 , 'eight'],
-  [9 , 'nine']
-]
+class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			display: 0,
+			formula: "",
+			operatorCount: 0
+		}
+		this.handleClear = this.handleClear.bind(this);
+		this.handleEquals = this.handleEquals.bind(this);
+		this.handleDecimal = this.handleDecimal.bind(this);
+		this.handleNumber = this.handleNumber.bind(this);
+		this.handleOperator = this.handleOperator.bind(this);
+	}
 
-const  App = () =>  {
-  
-  const [current , setCurrent] = useState(0)
-  const [temp, setTemp] = useState(false)
-  const [operation, setOperation] = useState("")
-  const [nop , setNop] = useState(1)
-  const [isPut, setIsPut] = useState(false)
-  const [formula, setFormula] = useState("")
+	handleClear() {
+		this.setState({display: 0, formula: "", operatorCount: 0});
+	}
 
-  const setttingValues = (value) => {
-    
-    if(operation !== ""){
-      const newValue = ((temp * 10 ) + value) * nop
-      setTemp(newValue)
-    }else{
-      const newValue = ((current * 10 ) + value) * nop
-      setCurrent(newValue)
-    }
-    
-  }
+	handleEquals() {	
+		var formula = this.state.formula;
+		const opCount = this.state.operatorCount;
 
-  const settingOperation = (value) => {
-    setOperation(value)
-  }
+		if(opCount > 0) {
+			formula = formula.slice(0, formula.length-opCount);
+		}
+		if(formula[0] !== "+" && formula[0] !== "/" && formula[0] !== "*") {		
+			var result = this.getResult(formula);
+			const finalFormula = formula+"="+result;
 
-  const makeOperation = () => {
-    if(operation === "" || temp == false){
-      return
-    }
-    console.log(operation, current, temp)
-    switch (operation){
-    case "x": 
-      setCurrent( current * temp)
-      break; 
-    case "+": 
-      setCurrent( current + temp)
-      break 
-    case "-": 
-      setCurrent( current - temp)
-      break; 
-    case "/": 
-      setCurrent( current / temp)
-      break; 
+			this.setState({
+				display: result,
+				formula: finalFormula 
+			});
+		}
+	}
 
-    }
-    setOperation("")
-    setTemp(false)
-  }
+	getResult(formula)  {
+		return new Function('return ' + formula) ();
+	}
 
-  return (
-    <div className="app"> 
-      <div className="formulaScreen">{formula}</div>
-      <div className="outputScreen" id="display">{(operation === '')? current: (operation !== '' && temp !== false )? temp: operation }</div>
-      <div id="outer">
-         <div className="outer-left">
-           <button onClick={() => {
-             setCurrent(0)
-             setTemp(false)
-             setOperation("")
-           }} id="clear" className="item-flex big-horizontal">AC</button>
-           <button id="divide" className="item-flex" >/</button>
-           {
-             numbers.map((it) => 
-              <button onClick={() => setttingValues(it[0])} key={it[0]} id={it[1]} className="item-flex">{it[0]}</button>
-             ).reverse()
-           }
-           <button onClick={() => setttingValues(0)} id="zero" className="item-flex big-horizontal">0</button>
-           <button id="decimal" className="item-flex">.</button>
-         </div>
-         <div className="outer-right">
-            <button onClick={() => settingOperation('x')} id="multiply" className="item-flex">x</button>
-            <button onClick={() => settingOperation('-')} id="subtract" className="item-flex">-</button>
-            <button onClick={() => settingOperation('+')} id="add" className="item-flex">+</button>
-            <button onClick={() => makeOperation()} id="equals" className="item-flex big-vertical" >=</button>
-         </div>
-      </div>
-    </div>
-    
-  );
+	handleDecimal() {
+		var display = this.state.display;
+		if(!display.includes(".")) {
+			this.setState({
+				formula: this.state.formula+".",
+				display: this.state.display+"."
+			})
+		}
+	}
+
+	handleNumber(num) {
+		var formula;
+		var display = this.state.display;
+		if(this.state.formula === "") {
+			if(num > 0) {
+				formula = num; 
+				display = num;
+			} else {
+				return;
+			}
+		}
+		else {
+			formula = this.state.formula+num;
+
+			if(this.state.operatorCount > 0) {
+				display = num;
+			} else {
+				display = display+num;
+			}
+		}
+		this.setState({formula, display, operatorCount: 0})
+	}
+
+	handleOperator(operator) {
+		var formula = this.state.formula;
+		var count = this.state.operatorCount;
+
+		if(formula !== "") {		
+			if(formula.includes("=")) {
+				formula = this.state.display;
+			} else {
+				if(this.state.operatorCount === 1 && operator !=="-") {
+					formula = formula.slice(0, formula.length-1);
+					count = count-1;
+				} 
+				if(this.state.operatorCount > 1){
+					formula = formula.slice(0, formula.length-2);
+					count = count-2;
+				}
+			}
+		}
+		var result = formula+operator;
+		count++;
+		this.setState({
+			formula: result, 
+			display: operator, 
+			operatorCount: count
+		});
+	}
+
+	render() {
+		return (
+			<React.Fragment>
+				<div id="container">
+					<div id="display-section">
+            <div id="formula">{this.state.formula}</div>
+            <div id="display">{this.state.display}</div>
+					</div>
+          <div id="controls">
+            <button value={"AC"} id={"clear"} onClick={this.handleClear} className="colSpan2 maroon">AC</button>
+            <button value={"/"} id={"divide"} onClick={e => this.handleOperator(e.target.value)} className="lightGrey">/</button>
+            <button value={"*"} id={"multiply"} onClick={e => this.handleOperator(e.target.value)} className="lightGrey">x</button>
+            <button value={7} id={"seven"} onClick={e => this.handleNumber(e.target.value)} >7</button>
+            <button value={8} id={"eight"} onClick={e => this.handleNumber(e.target.value)} >8</button>
+            <button value={9} id={"nine"} onClick={e => this.handleNumber(e.target.value)} >9</button>
+            <button value={"-"} id={"subtract"} onClick={e => this.handleOperator(e.target.value)} className="lightGrey" >-</button>
+            <button value={4} id={"four"} onClick={e => this.handleNumber(e.target.value)} >4</button>
+            <button value={5} id={"five"} onClick={e => this.handleNumber(e.target.value)} >5</button>
+            <button value={6} id={"six"} onClick={e => this.handleNumber(e.target.value)} >6</button>
+            <button value={"+"} id={"add"} onClick={e => this.handleOperator(e.target.value)} className="lightGrey">+</button>
+            <button value={1} id={"one"} onClick={e => this.handleNumber(e.target.value)} >1</button>
+            <button value={2} id={"two"} onClick={e => this.handleNumber(e.target.value)} >2</button>
+            <button value={3} id={"three"} onClick={e => this.handleNumber(e.target.value)} >3</button>
+            <button value={"="} id={"equals"} onClick={this.handleEquals} className="rowSpan2 blue">=</button>
+            <button value={0} id={"zero"} onClick={e => this.handleNumber(e.target.value)} className="colSpan2">0</button>
+            <button value={"."} id={"decimal"} onClick={this.handleDecimal} >.</button>
+          </div>
+				</div>
+			</React.Fragment>
+		);
+	}
 }
 
 export default App;
