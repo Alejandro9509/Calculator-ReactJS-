@@ -2,18 +2,22 @@ $base-color : #F2F2F2;
 
 .app {
     position:relative; 
-    margin: 30px auto; 
+    margin: 60px auto; 
     background-color: blue; 
-    width: 320px;
-    height: 600px;
+    width: 321px;
+    height: 501px;
+    border: 1px solid #F2F2F2;
+    box-sizing: border-box;
 }
 .formulaScreen {
     padding: 10px; 
-    background-color: black; 
+    height: 50px;
+    background-color: white; 
 }
 
 .outputScreen{
-    padding: 10px; 
+    padding: 10px;
+    height: 50px; 
     background-color: white;
 }
 #outer {
@@ -27,21 +31,40 @@ $base-color : #F2F2F2;
         height: 400px;
         flex: 0 0 240px;
         background-color: green;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .item-flex{
+            height: 80px;
+            flex: 0 0 80px;
+            background:red; 
+        }
+        .big-horizontal {
+            flex-basis: 160px;
+        }
+        
     }
     .outer-right {
         width: 80px;
         flex: 0 0 80px;
         height: 400px;
         background-color: red;
-    }
-    
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        .item-flex{
+            height: 80px;
+            flex: 0 0 80px;
+            background:red; 
+        }
+        .big-vertical {
+            flex-basis: 160px
+        }
+    } 
 }
 
 
 
-.big {
-    flex-basis: 110px;
-}
 
 
 
